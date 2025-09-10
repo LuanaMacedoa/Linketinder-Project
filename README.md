@@ -1,3 +1,4 @@
+Luana Gabriella: 
 # Linketinder - MVP
 
 ## Descrição
