@@ -58,6 +58,7 @@ class PessoaJuridica extends Pessoa {
         this.competencias = competencias
     }
 
+
     String toString() {
         return """Nome: $nome
         Email: $email

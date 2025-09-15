@@ -38,6 +38,9 @@ class Dados {
 
         candidatos << candidato1 << candidato2 << candidato3 << candidato4 << candidato5
 
+
+
+
         //Empresa
         def empresa1 = new PessoaJuridica(
                 "Tech Solutions", "contato@tech.com", "SP", "01111-000",
@@ -69,9 +72,18 @@ class Dados {
                 ["Kotlin", "Android", "Segurança da Informação"]
         )
 
-        empresas << empresa1 << empresa2 << empresa3 << empresa3 << empresa4 << empresa5
+        empresas << empresa1 << empresa2 << empresa3  << empresa4 << empresa5
 
     }
 
+    // adicionar novo candidato
+    def adicionarCandidato(PessoaFisica candidato){
+        candidatos << candidato
+    }
+
+    // adicionar nova empresa
+    def adicionarEmpresa(PessoaJuridica empresa){
+        empresas << empresa
+    }
 }
 
