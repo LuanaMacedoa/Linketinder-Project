@@ -22,7 +22,6 @@ while (true) {
     def num = numStr.toInteger()
     print(num)
 
-    // adicionar um while aqui
     switch (num) {
         case 1:
             usuario.mostrarCandidatos();
