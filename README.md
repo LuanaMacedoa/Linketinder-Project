@@ -28,3 +28,13 @@ MVP de sistema de contratação inspirado no **LinkedIn** e **Tinder**, permitin
 - `Testes.groovy` → testes TDD validando criação de objetos, listas e atributos  
 
 
+## MODELO DIAGRAMA MER
+- utilizado: brmodelo
+<img width="1510" height="827" alt="Captura de tela 2025-10-12 123853" src="https://github.com/user-attachments/assets/044d922b-235e-4c57-9972-5d4266cc956b" />
+
+## MODELO DIAGRAMA DER
+- utilizado: dbdiagram
+<img width="1658" height="750" alt="Captura de tela 2025-10-12 195055" src="https://github.com/user-attachments/assets/e48c1e62-800e-4d99-9615-24f5981cdd43" />
+
+
+
