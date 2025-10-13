@@ -1,137 +1,65 @@
---
--- PostgreSQL database dump
---
+CREATE TABLE Empresa (
+	id_empresa SERIAL PRIMARY KEY,
+	cnpj VARCHAR(18) NOT NULL UNIQUE,
+	nome_emp VARCHAR(100) NOT NULL,
+	email_corporativo VARCHAR(100) NOT NULL UNIQUE,
+	desc_empresa TEXT,
+	pais VARCHAR(50),
+	senha VARCHAR(255) NOT NULL
+);
 
-\restrict Ks8mphwaqlLP9uAVvYW80l7ev7coATFxMgqAtFk1cYss6abzisMIAHMRtEmsCFS
+CREATE TABLE Candidato (
+	id_candidato SERIAL PRIMARY KEY,
+	nome VARCHAR(50) NOT NULL,
+	sobrenome VARCHAR(50) NOT NULL,
+	cpf VARCHAR(14) NOT NULL UNIQUE,
+	email VARCHAR(100) NOT NULL UNIQUE,
+	pais VARCHAR(50),
+	cep VARCHAR(15),
+	data_nasc DATE,
+	desc_pessoal TEXT,
+	senha VARCHAR(255) NOT NULL
+);
 
--- Dumped from database version 17.6
--- Dumped by pg_dump version 17.6
+CREATE TABLE Competencia (
+	id_competencia SERIAL PRIMARY KEY,
+	nome_competencia VARCHAR(100) NOT NULL
+);
 
--- Started on 2025-10-12 20:04:41
+CREATE TABLE Vaga(
+	id_vaga SERIAL PRIMARY KEY,
+	id_empresa INT NOT NULL REFERENCES Empresa(id_empresa) ON DELETE CASCADE,
+	nome_vaga VARCHAR(100) NOT NULL,
+	desc_vaga TEXT,
+	localizacao VARCHAR(100)
+);
 
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET transaction_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
+CREATE TABLE Candidato_competencia(
+	id_candidato INT NOT NULL REFERENCES Candidato(id_candidato) ON DELETE CASCADE,
+	id_competencia INT NOT NULL REFERENCES Competencia(id_competencia) ON DELETE CASCADE,
+	PRIMARY KEY (id_candidato,id_competencia)
+);
 
---
--- TOC entry 4943 (class 0 OID 16589)
--- Dependencies: 226
--- Data for Name: candidato; Type: TABLE DATA; Schema: public; Owner: postgres
---
+CREATE TABLE Vaga_competencia(
+id_vaga INT NOT NULL REFERENCES Vaga(id_vaga) ON DELETE CASCADE,
+id_competencia INT NOT NULL REFERENCES Competencia(id_competencia) ON DELETE CASCADE,
+PRIMARY KEY (id_vaga, id_competencia)
+);
 
-COPY public.candidato (id_candidato, nome, sobrenome, cpf, email, pais, cep, data_nasc, desc_pessoal, senha) FROM stdin;
-1	Sandubinha	Silva	123.456.789-00	sandubinha@gmail.com	Brasil	58000-000	1990-01-01	Apaixonado por programação	senha123
-2	Maria	Oliveira	234.567.890-11	mariao@gmail.com	Brasil	58000-001	1992-02-02	Desenvolvedora Front-end	senha234
-3	João	Pereira	345.678.901-22	joaop@gmail.com	Brasil	58000-002	1988-03-03	Especialista em banco de dados	senha345
-4	Ana	Costa	456.789.012-33	anac@gmail.com	Brasil	58000-003	1995-04-04	Designer UX/UI	senha456
-5	Pedro	Santos	567.890.123-44	pedros@gmail.com	Brasil	58000-004	1991-05-05	Engenheiro de dados	senha567
-\.
+INSERT INTO Empresa (cnpj, nome_emp, email_corporativo, desc_empresa, pais, senha) VALUES
+('12.345.678/0001-90', 'Pastelsoft', 'contato@pastelsoft.com', 'Desenvolvimento de softwares ERP', 'Brasil', 'senha123'),
+('98.765.432/0001-10', 'TechByte', 'contato@techbyte.com', 'Consultoria em TI e inovação', 'Brasil', 'senha456'),
+('11.222.333/0001-44', 'CodeLab', 'contato@codelab.com', 'Desenvolvimento de aplicativos', 'Brasil', 'senha789'),
+('55.666.777/0001-88', 'SoftDesign', 'contato@softdesign.com', 'Design e soluções web', 'Brasil', 'senha321'),
+('99.888.777/0001-66', 'DataFlow', 'contato@dataflow.com', 'Consultoria em dados e BI', 'Brasil', 'senha654');
 
-
---
--- TOC entry 4937 (class 0 OID 16538)
--- Dependencies: 220
--- Data for Name: competencia; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.competencia (id_competencia, nome_competencia) FROM stdin;
-\.
-
-
---
--- TOC entry 4940 (class 0 OID 16558)
--- Dependencies: 223
--- Data for Name: candidato_competencia; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.candidato_competencia (id_candidato, id_competencia) FROM stdin;
-\.
-
-
---
--- TOC entry 4935 (class 0 OID 16512)
--- Dependencies: 218
--- Data for Name: empresa; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.empresa (id_empresa, cnpj, nome_emp, email_corporativo, desc_empresa, pais, senha) FROM stdin;
-1	12.345.678/0001-90	Pastelsoft	contato@pastelsoft.com	Desenvolvimento de softwares ERP	Brasil	senha123
-2	98.765.432/0001-10	TechByte	contato@techbyte.com	Consultoria em TI e inovação	Brasil	senha456
-3	11.222.333/0001-44	CodeLab	contato@codelab.com	Desenvolvimento de aplicativos	Brasil	senha789
-4	55.666.777/0001-88	SoftDesign	contato@softdesign.com	Design e soluções web	Brasil	senha321
-5	99.888.777/0001-66	DataFlow	contato@dataflow.com	Consultoria em dados e BI	Brasil	senha654
-\.
+select * from candidato;
 
 
---
--- TOC entry 4939 (class 0 OID 16545)
--- Dependencies: 222
--- Data for Name: vaga; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.vaga (id_vaga, id_empresa, nome_vaga, desc_vaga, localizacao) FROM stdin;
-\.
-
-
---
--- TOC entry 4941 (class 0 OID 16573)
--- Dependencies: 224
--- Data for Name: vaga_competencia; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.vaga_competencia (id_vaga, id_competencia) FROM stdin;
-\.
-
-
---
--- TOC entry 4949 (class 0 OID 0)
--- Dependencies: 225
--- Name: candidato_id_candidato_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.candidato_id_candidato_seq', 5, true);
-
-
---
--- TOC entry 4950 (class 0 OID 0)
--- Dependencies: 219
--- Name: competencia_id_competencia_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.competencia_id_competencia_seq', 1, false);
-
-
---
--- TOC entry 4951 (class 0 OID 0)
--- Dependencies: 217
--- Name: empresa_id_empresa_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.empresa_id_empresa_seq', 5, true);
-
-
---
--- TOC entry 4952 (class 0 OID 0)
--- Dependencies: 221
--- Name: vaga_id_vaga_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.vaga_id_vaga_seq', 1, false);
-
-
--- Completed on 2025-10-12 20:04:42
-
---
--- PostgreSQL database dump complete
---
-
-\unrestrict Ks8mphwaqlLP9uAVvYW80l7ev7coATFxMgqAtFk1cYss6abzisMIAHMRtEmsCFS
+INSERT INTO Candidato (cpf, nome, sobrenome, email, pais, cep, data_nasc, desc_pessoal, senha) VALUES
+('123.456.789-00', 'Sandubinha', 'Silva', 'sandubinha@gmail.com', 'Brasil', '58000-000', '1990-01-01', 'Apaixonado por programação', 'senha123'),
+('234.567.890-11', 'Maria', 'Oliveira', 'mariao@gmail.com', 'Brasil', '58000-001', '1992-02-02', 'Desenvolvedora Front-end', 'senha234'),
+('345.678.901-22', 'João', 'Pereira', 'joaop@gmail.com', 'Brasil', '58000-002', '1988-03-03', 'Especialista em banco de dados', 'senha345'),
+('456.789.012-33', 'Ana', 'Costa', 'anac@gmail.com', 'Brasil', '58000-003', '1995-04-04', 'Designer UX/UI', 'senha456'),
+('567.890.123-44', 'Pedro', 'Santos', 'pedros@gmail.com', 'Brasil', '58000-004', '1991-05-05', 'Engenheiro de dados', 'senha567');
 
