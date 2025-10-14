@@ -5,6 +5,7 @@ CREATE TABLE Empresa (
 	email_corporativo VARCHAR(100) NOT NULL UNIQUE,
 	desc_empresa TEXT,
 	pais VARCHAR(50),
+	cep VARCHAR(15),
 	senha VARCHAR(255) NOT NULL
 );
 
