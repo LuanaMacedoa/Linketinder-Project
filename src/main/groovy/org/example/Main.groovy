@@ -19,10 +19,10 @@ class Main {
         )
 
         dados.inserirEmpresa(empresa)
-        println "✅ Empresa inserida com ID: ${empresa.id}"
+        println "Empresa inserida com ID: ${empresa.id}"
 
         def empresas = dados.listarEmpresas()
-        println "📋 Lista de empresas:"
+        println "Lista de empresas:"
         empresas.each { e ->
             println "ID: ${e.id}, Nome: ${e.nome}, Email: ${e.email}, Competências: ${e.competencias}"
         }
@@ -35,7 +35,7 @@ class Main {
 
 
         empresas = dados.listarEmpresas()
-        println "📋 Lista de empresas após update:"
+        println "Lista de empresas após update:"
         empresas.each { e ->
             println "ID: ${e.id}, Nome: ${e.nome}, Descrição: ${e.descricaoEmpresa}"
         }
