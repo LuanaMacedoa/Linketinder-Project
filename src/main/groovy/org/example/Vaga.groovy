@@ -5,7 +5,7 @@ class Vaga {
         String descricaoVaga
         List<String> competencias
         int idEmpresa
-        //int id
+        int id
 
         Vaga(String nomeVaga, String descricaoVaga, List<String> competencias, int idEmpresa) {
             this.nomeVaga = nomeVaga

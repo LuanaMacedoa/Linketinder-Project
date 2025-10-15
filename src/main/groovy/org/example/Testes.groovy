@@ -76,356 +76,87 @@ def candidatoTeste = new PessoaFisica(
         "senha123"
 )
 
-    dados.inserirCandidato(candidatoTeste)
-    println "✅ Candidato inserido com sucesso!"
-
-def dados = new Dados()
-
-        int empresaIdExistente = 5 // substitua pelo ID real da empresa
-
-        def vagaTeste = new Vaga(
-                "Desenvolvedor java",
-                "Desenvolvimento backend com Java",
-                [ "Java", "SQL"],
-                empresaIdExistente
-        )
-
-        dados.inserirVaga(vagaTeste)
-
-        println "Vaga '${vagaTeste.nomeVaga}' inserida para empresa id ${empresaIdExistente}"
-
-        package org.example
-
-class Main {
-    static void main(String[] args) {
-        def dados = new Dados()
-
-        // === CREATE: Inserir nova empresa ===
-        def novaEmpresa = new Empresa(
-            "12.345.678/0001-99",
-            "Empresa Teste",
-            "contato@empresateste.com",
-            "Descrição da empresa teste",
-            "Brasil",
-            "12345-678",
-            "senhaSegura"
-        )
-        inserirEmpresa(dados, novaEmpresa)
-
-        // === READ: Buscar empresa por ID ===
-        def empresa = buscarEmpresaPorId(dados, 1) // Alterar ID conforme banco
-        if (empresa) {
-            println "🏢 Empresa encontrada: ${empresa.nomeEmp}"
-        }
-
-        // === UPDATE: Atualizar nome da empresa ===
-        if (empresa) {
-            empresa.nomeEmp = "Empresa Atualizada"
-            atualizarEmpresa(dados, empresa)
-        }
-    }
-
-    static void inserirEmpresa(Dados dados, Empresa empresa) {
-        dados.conectar()
-        try {
-            def sql = """
-                INSERT INTO Empresa (cnpj, nome_emp, email_corporativo, desc_empresa, pais, cep, senha)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            """
-            def stmt = dados.conn.prepareStatement(sql)
-            stmt.setString(1, empresa.cnpj)
-            stmt.setString(2, empresa.nomeEmp)
-            stmt.setString(3, empresa.emailCorporativo)
-            stmt.setString(4, empresa.descEmpresa)
-            stmt.setString(5, empresa.pais)
-            stmt.setString(6, empresa.cep)
-            stmt.setString(7, empresa.senha)
-            stmt.executeUpdate()
-            stmt.close()
-            println "✅ Empresa '${empresa.nomeEmp}' inserida com sucesso!"
-        } finally {
-            dados.desconectar()
-        }
-    }
-
-    static Empresa buscarEmpresaPorId(Dados dados, int id) {
-        dados.conectar()
-        try {
-            def stmt = dados.conn.prepareStatement("SELECT * FROM Empresa WHERE id_empresa = ?")
-            stmt.setInt(1, id)
-            def rs = stmt.executeQuery()
-            if (rs.next()) {
-                return new Empresa(
-                    rs.getString("cnpj"),
-                    rs.getString("nome_emp"),
-                    rs.getString("email_corporativo"),
-                    rs.getString("desc_empresa"),
-                    rs.getString("pais"),
-                    rs.getString("cep"),
-                    rs.getString("senha")
-                ).tap { it.idEmpresa = id }
-            }
-            return null
-        } finally {
-            dados.desconectar()
-        }
-    }
-
-    static void atualizarEmpresa(Dados dados, Empresa empresa) {
-        dados.conectar()
-        try {
-            def sql = """
-                UPDATE Empresa SET
-                    cnpj = ?, nome_emp = ?, email_corporativo = ?, desc_empresa = ?, pais = ?, cep = ?, senha = ?
-                WHERE id_empresa = ?
-            """
-            def stmt = dados.conn.prepareStatement(sql)
-            stmt.setString(1, empresa.cnpj)
-            stmt.setString(2, empresa.nomeEmp)
-            stmt.setString(3, empresa.emailCorporativo)
-            stmt.setString(4, empresa.descEmpresa)
-            stmt.setString(5, empresa.pais)
-            stmt.setString(6, empresa.cep)
-            stmt.setString(7, empresa.senha)
-            stmt.setInt(8, empresa.idEmpresa)
-            stmt.executeUpdate()
-            stmt.close()
-            println "Empresa '${empresa.nomeEmp}' atualizada com sucesso!"
-        } finally {
-            dados.desconectar()
-        }
-    }
-}
      def dados = new Dados()
 
-        int idParaBuscar = 6 // substitua pelo ID real da empresa
+        // ================== TESTE EMPRESA ==================
+        def empresa = new PessoaJuridica(
+                "Empresa II",
+                "contatooo@empresa.com",
+                "58000-000",
+                "10.342.678/0002-90",
+                "brasil",
+                "Empresa de testes",
+                ["Gestão", "TI"],
+                "senha123"
+        )
 
-        // READ - Buscar pessoa jurídica por ID
-        def empresa = buscarPessoaPorId(dados, idParaBuscar)
+        dados.inserirEmpresa(empresa)
+        println "✅ Empresa inserida com ID: ${empresa.id}"
 
-        if (empresa) {
-            println " Empresa encontrada: ${empresa.nome}, ID: ${idParaBuscar}"
-
-            // UPDATE - Atualizar descrição da empresa
-            empresa.descricaoEmpresa = "Descrição atualizada pelo teste"
-            atualizarPessoaJuridica(dados, empresa)
-            println "✏ Empresa atualizada com sucesso!"
-        } else {
-            println " Nenhuma empresa encontrada com ID $idParaBuscar"
-        }
-    }
-
-    static PessoaJuridica buscarPessoaPorId(Dados dados, int id) {
-        dados.conectar()
-        try {
-            def stmt = dados.conn.prepareStatement("SELECT * FROM Empresa WHERE id_empresa = ?")
-            stmt.setInt(1, id)
-            def rs = stmt.executeQuery()
-            if (rs.next()) {
-                return new PessoaJuridica(
-                        rs.getString("nome_emp"),
-                        rs.getString("email_corporativo"),
-                        rs.getString("cep"),
-                        rs.getString("cnpj"),
-                        rs.getString("pais"),
-                        rs.getString("desc_empresa"),
-                        [], // competências vazias pra simplificar
-                        rs.getString("senha")
-                ).tap { it.id = id }
-            }
-            return null
-        } finally {
-            dados.desconectar()
-        }
-    }
-
-    static void atualizarPessoaJuridica(Dados dados, PessoaJuridica pj) {
-        dados.conectar()
-        try {
-            def sql = """
-            UPDATE Empresa SET nome_emp = ?, email_corporativo = ?, desc_empresa = ?, pais = ?, cep = ?, senha = ?
-            WHERE id_empresa = ?
-            """
-            def stmt = dados.conn.prepareStatement(sql)
-            stmt.setString(1, pj.nome)
-            stmt.setString(2, pj.email)
-            stmt.setString(3, pj.descricaoEmpresa)
-            stmt.setString(4, pj.pais)
-            stmt.setString(5, pj.cep)
-            stmt.setString(6, pj.senha)
-            stmt.setInt(7, pj.id)
-            stmt.executeUpdate()
-            stmt.close()
-        } finally {
-            dados.desconectar()
+        def empresas = dados.listarEmpresas()
+        println "📋 Lista de empresas:"
+        empresas.each { e ->
+            println "ID: ${e.id}, Nome: ${e.nome}, Email: ${e.email}, Competências: ${e.competencias}"
         }
 
-        def dados = new Dados()
+        // Atualizar empresa
+        empresa.nome = "Empresa Atualizada"
+        empresa.descricaoEmpresa = "Descrição atualizada"
+        dados.atualizarEmpresa(empresa)
+        println "✏ Empresa atualizada!"
 
-                // === CREATE: Inserir nova vaga ===
-                def novaVaga = new Vaga(
-                        "Desenvolvedor Full Stack",
-                        "Atuar no desenvolvimento web completo.",
-                        ["Java", "Angular", "SQL"],
-                        1 // ID da empresa já existente no banco
-                )
-                dados.inserirVaga(novaVaga)
-
-                // === READ: Buscar vaga por ID ===
-                def vaga = buscarVagaPorId(dados, 1) // Altere o ID conforme seu banco
-                if (vaga) {
-                    println " Vaga encontrada: ${vaga.nomeVaga} - ${vaga.descricaoVaga}"
-                }
-
-                // === UPDATE: Atualizar descrição da vaga ===
-                if (vaga) {
-                    vaga.descricaoVaga = "Descrição atualizada para a vaga de Full Stack."
-                    atualizarVaga(dados, vaga)
-                }
-            }
-
-            static def buscarVagaPorId(Dados dados, int id) {
-                dados.conectar()
-                try {
-                    def stmt = dados.conn.prepareStatement("SELECT * FROM vaga WHERE id_vaga = ?")
-                    stmt.setInt(1, id)
-                    def rs = stmt.executeQuery()
-                    if (rs.next()) {
-                        return new Vaga(
-                                rs.getString("nome_vaga"),
-                                rs.getString("desc_vaga"),
-                                [], // competências não carregadas neste exemplo
-                                rs.getInt("id_empresa")
-                        ).tap { it.id = rs.getInt("id_vaga") }
-                    }
-                    return null
-                } finally {
-                    dados.desconectar()
-                }
-            }
-
-            static void atualizarVaga(Dados dados, Vaga vaga) {
-                dados.conectar()
-                try {
-                    def stmt = dados.conn.prepareStatement("""
-                UPDATE vaga SET nome_vaga = ?, desc_vaga = ?, localizacao = ?
-                WHERE id_vaga = ?
-            """)
-                    stmt.setString(1, vaga.nomeVaga)
-                    stmt.setString(2, vaga.descricaoVaga)
-                    stmt.setString(3, "Remoto") // ou outro valor se quiser
-                    stmt.setInt(4, vaga.id)
-                    stmt.executeUpdate()
-                    stmt.close()
-                    println "Vaga '${vaga.nomeVaga}' atualizada com sucesso!"
-                } finally {
-                    dados.desconectar()
-                }
-
-
-                       def dados = new Dados()
-
-        // === CREATE: Inserir competência ===
-        String novaCompetencia = "Kotlin"
-        inserirCompetencia(dados, novaCompetencia)
-
-        // === READ: Buscar competência por nome ===
-        def compId = buscarCompetenciaPorNome(dados, novaCompetencia)
-        if (compId) {
-            println "Competência encontrada: '${novaCompetencia}' com ID ${compId}"
+        // Verificando a atualização
+        empresas = dados.listarEmpresas()
+        println "📋 Lista de empresas após update:"
+        empresas.each { e ->
+            println "ID: ${e.id}, Nome: ${e.nome}, Descrição: ${e.descricaoEmpresa}"
         }
 
-        // === UPDATE: Atualizar nome da competência ===
-        if (compId) {
-            atualizarCompetencia(dados, compId, "Kotlin Avançado")
+        // Deletar empresa
+        //dados.deletarEmpresa(empresa.id)
+        //println "🗑 Empresa deletada!"
+
+        // ================== TESTE VAGA ==================
+        def vaga = new Vaga(
+                "Desenvolvedor Java",
+                "Vaga para programador Java",
+                ["Java", "SQL"],
+                empresa.id // você pode usar qualquer empresa existente
+        )
+
+        dados.inserirVaga(vaga)
+        println "✅ Vaga inserida com ID: ${vaga.id}"
+
+        def vagas = dados.listarVagas()
+        println "📋 Lista de vagas:"
+        vagas.each { v ->
+            println "ID: ${v.id}, Nome: ${v.nomeVaga}, Empresa ID: ${v.idEmpresa}"
         }
-    }
 
-    static void inserirCompetencia(Dados dados, String nome) {
-        dados.conectar()
-        try {
-            def stmt = dados.conn.prepareStatement("""
-                INSERT INTO Competencia(nome_competencia)
-                VALUES (?)
-                ON CONFLICT (nome_competencia) DO NOTHING
-            """)
-            stmt.setString(1, nome)
-            stmt.executeUpdate()
-            stmt.close()
-            println "Competência '$nome' inserida com sucesso!"
-        } finally {
-            dados.desconectar()
+        // Atualizar vaga
+        vaga.nomeVaga = "Desenvolvedor Java Atualizado"
+        vaga.descricaoVaga = "Descrição atualizada"
+        dados.atualizarVaga(vaga)
+        println "✏ Vaga atualizada!"
+
+        // Verificando a atualização
+        vagas = dados.listarVagas()
+        println "📋 Lista de vagas após update:"
+        vagas.each { v ->
+            println "ID: ${v.id}, Nome: ${v.nomeVaga}, Empresa ID: ${v.idEmpresa}"
         }
-    }
 
-    static Integer buscarCompetenciaPorNome(Dados dados, String nome) {
-        dados.conectar()
-        try {
-            def stmt = dados.conn.prepareStatement("SELECT id_competencia FROM Competencia WHERE nome_competencia = ?")
-            stmt.setString(1, nome)
-            def rs = stmt.executeQuery()
-            if (rs.next()) {
-                return rs.getInt("id_competencia")
-            }
-            return null
-        } finally {
-            dados.desconectar()
-        }
-    }
+        // Deletar vaga
+        //dados.deletarVaga(vaga.id)
+        //println "🗑 Vaga deletada!"
 
-    static void atualizarCompetencia(Dados dados, int id, String novoNome) {
-        dados.conectar()
-        try {
-            def stmt = dados.conn.prepareStatement("UPDATE Competencia SET nome_competencia = ? WHERE id_competencia = ?")
-            stmt.setString(1, novoNome)
-            stmt.setInt(2, id)
-            stmt.executeUpdate()
-            stmt.close()
-            println " Competência ID ${id} atualizada para '${novoNome}' com sucesso!"
-        } finally {
-            dados.desconectar()
-        }
-    }
+        // ================== TESTE COMPETÊNCIA ==================
+        def competencia = "Python Avançado"
+        dados.inserirCompetencia(competencia)
+        println "✅ Competência '$competencia' inserida!"
 
-    def dados = new Dados()
+        def idComp = dados.buscarCompetenciaPorNome(competencia)
+        println "📋 ID da competência '$competencia': $idComp"
 
-        // === DELETE VAGA ===
-        deletarVaga(dados, 3) // Altere o ID conforme necessário
-
-        // === DELETE COMPETÊNCIA ===
-        deletarCompetencia(dados, 8) // Altere o ID conforme necessário
-    }
-
-    static void deletarVaga(Dados dados, int id) {
-        dados.conectar()
-        try {
-            def stmt = dados.conn.prepareStatement("DELETE FROM Vaga WHERE id_vaga = ?")
-            stmt.setInt(1, id)
-            int rows = stmt.executeUpdate()
-            stmt.close()
-            if (rows > 0) {
-                println " Vaga com ID ${id} deletada com sucesso!"
-            } else {
-                println " Nenhuma vaga encontrada com ID ${id}."
-            }
-        } finally {
-            dados.desconectar()
-        }
-    }
-
-    static void deletarCompetencia(Dados dados, int id) {
-        dados.conectar()
-        try {
-            def stmt = dados.conn.prepareStatement("DELETE FROM Competencia WHERE id_competencia = ?")
-            stmt.setInt(1, id)
-            int rows = stmt.executeUpdate()
-            stmt.close()
-            if (rows > 0) {
-                println " Competência com ID ${id} deletada com sucesso!"
-            } else {
-                println "⚠Nenhuma competência encontrada com ID ${id}."
-            }
-        } finally {
-            dados.desconectar()
-        }
+        // Você pode deletar diretamente usando SQL se quiser, mas inserir/buscar já testa a lógica
 }*/

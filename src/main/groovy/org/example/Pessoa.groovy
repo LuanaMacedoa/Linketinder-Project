@@ -13,7 +13,6 @@ class Pessoa {
 
 class PessoaFisica extends Pessoa {
     String cpf
-    int idade
     String sobrenome
     String pais
     String descricaoPessoal
@@ -82,6 +81,7 @@ class PessoaJuridica extends Pessoa {
         """
     }
 }
+
 
 
 
