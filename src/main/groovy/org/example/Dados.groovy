@@ -81,7 +81,7 @@ class Dados {
                     rs.getString("desc_pessoal"),
                     [],
                     rs.getDate("data_nasc")?.toLocalDate(),
-                    rs.getString("senha")// competências serão adicionadas depois se precisar
+                    rs.getString("senha")
             )
             c.id = rs.getInt("id_candidato")
             lista.add(c)
@@ -144,7 +144,7 @@ class Dados {
                     rs.getString("cnpj"),
                     rs.getString("pais"),
                     rs.getString("desc_empresa"),
-                    [],           // competências (vazio por enquanto)
+                    [],           
                     rs.getString("senha")
             )
             e.id = rs.getInt("id_empresa")
@@ -182,7 +182,6 @@ class Dados {
     void inserirVaga(Vaga vaga) {
         conectar()
         try {
-            // 1️⃣ Inserir a vaga e pegar o ID gerado
             def stmt = conn.prepareStatement("""
             INSERT INTO vaga (id_empresa, nome_vaga, desc_vaga, localizacao)
             VALUES (?, ?, ?, ?) RETURNING id_vaga
@@ -197,9 +196,7 @@ class Dados {
             rs.close()
             stmt.close()
 
-            // 2️⃣ Inserir competências e associar à vaga
             vaga.competencias.each { comp ->
-                // Inserir na tabela Competencia se não existir
                 def stmtComp = conn.prepareStatement("""
                 INSERT INTO competencia (nome_competencia)
                 VALUES (?)
@@ -209,7 +206,6 @@ class Dados {
                 stmtComp.executeUpdate()
                 stmtComp.close()
 
-                // Associar vaga à competência
                 def stmtAssoc = conn.prepareStatement("""
                 INSERT INTO vaga_competencia (id_vaga, id_competencia)
                 SELECT ?, id_competencia FROM competencia WHERE nome_competencia = ?
