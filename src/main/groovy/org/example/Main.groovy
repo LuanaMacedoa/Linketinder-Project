@@ -15,7 +15,6 @@ class Main {
             println "5. Listar Vagas"
             println "6. Deletar Vaga"
             println "7. Sair"
-            print "Escolha uma opção: "
             def opcao = reader.readLine()
 
             switch (opcao) {
