@@ -13,6 +13,10 @@ class Vaga {
             this.competencias = competencias
             this.idEmpresa = idEmpresa
         }
+
+    String toString() {
+        return "Vaga(id: $id, nome: $nomeVaga, descrição: $descricaoVaga, empresaId: $idEmpresa)"
+    }
     }
 
 

@@ -1,51 +1,56 @@
 package org.example
 
-import java.time.LocalDate
-
 class Main {
     static void main(String[] args) {
-        /*
-        def dados = new Dados()
 
-        def empresa = new PessoaJuridica(
-                "Empresa 20",
-                "contatooooo@empresa.com",
-                "58000-000",
-                "10.332.698/0002-90",
-                "brasil",
-                "Empresa de testes",
-                ["Gestão", "TI"],
-                "senha123"
-        )
+        def dados = new DAO()
+        def reader = new BufferedReader(new InputStreamReader(System.in))
 
-        dados.inserirEmpresa(empresa)
-        println "✅ Empresa inserida com ID: ${empresa.id}"
+        while (true) {
+            println "\n=== MENU ==="
+            println "1. Listar Empresas"
+            println "2. Deletar Empresa"
+            println "3. Listar Candidatos"
+            println "4. Deletar Candidato"
+            println "5. Listar Vagas"
+            println "6. Deletar Vaga"
+            println "7. Sair"
+            print "Escolha uma opção: "
+            def opcao = reader.readLine()
 
-        def empresas = dados.listarEmpresas()
-        println "📋 Lista de empresas:"
-        empresas.each { e ->
-            println "ID: ${e.id}, Nome: ${e.nome}, Email: ${e.email}, Competências: ${e.competencias}"
+            switch (opcao) {
+                case "1":
+                    println(dados.listarEmpresas())
+                    break
+                case "2":
+                    def id = reader.readLine().toInteger()
+                    println(dados.deletarEmpresa(id))
+                    break
+                case "3":
+                    println(dados.listarCandidatos())
+                    break
+                case "4":
+                    def id = reader.readLine().toInteger()
+                    println(dados.deletarCandidato(id))
+                    break
+                case "5":
+                    println(dados.listarVagas())
+                    break
+                case "6":
+                    def id = reader.readLine().toInteger()
+                    println(dados.deletarVagas(id))
+                    break
+                case "7":
+                    println "Saindo..."
+                    return
+                    break
+                default:
+                    println "Opção inválida. Tente novamente."
+            }
         }
 
 
-        empresa.nome = "Empresa Atualizad2"
-        empresa.descricaoEmpresa = "Descrição atualizad2a"
-        dados.atualizarEmpresa(empresa)
-        println "✏ Empresa atualizada!"
-
-
-        empresas = dados.listarEmpresas()
-        println "📋 Lista de empresas após update:"
-        empresas.each { e ->
-            println "ID: ${e.id}, Nome: ${e.nome}, Descrição: ${e.descricaoEmpresa}"
-        }
-
-        */
-
-        //dados.deletarEmpresa(empresa.id)
-        //println "Empresa deletada!"
-
-    }
+}
 }
 
 

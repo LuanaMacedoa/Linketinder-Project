@@ -1,9 +1,9 @@
 package org.example
 
 class InterfaceUsuario {
-    Dados dados
+    DAO dados
 
-    InterfaceUsuario(Dados dados){
+    InterfaceUsuario(DAO dados){
         this.dados = dados
     }
 
