@@ -35,3 +35,22 @@ MVP de sistema de contratação inspirado no **LinkedIn** e **Tinder**, permitin
 ## MODELO DIAGRAMA DER
 - utilizado: dbdiagram
 <img width="1658" height="750" alt="Captura de tela 2025-10-12 195055" src="https://github.com/user-attachments/assets/e48c1e62-800e-4d99-9615-24f5981cdd43" />
+
+
+# LinkeTinder - Entrega Clean Code
+
+## Alterações principais
+
+- **Modularização**: DAOs separados por entidade (`CandidatoDAO`, `EmpresaDAO`, `VagaDAO`, `CompetenciaDAO`).
+- **Classe de Conexão**: `ConexaoDB` centraliza conexão com o banco e fechamento seguro.
+- **Redução de repetição**: Métodos reutilizáveis, especialmente para competências.
+- **Nomes claros**: Métodos e variáveis descritivos e consistentes.
+- **Tratamento de exceções**: Conexão e queries protegidas com try/catch.
+- **Separação de responsabilidades**: 
+  - DAOs → CRUD  
+  - Interfaces → interação com usuário  
+  - Main → menu e fluxo de execução  
+  - ConexaoDB → conexão com banco
+- **Formatação consistente**: código mais legível e padronizado.
+
+**Resultado:** código mais limpo, modular e fácil de manter.
