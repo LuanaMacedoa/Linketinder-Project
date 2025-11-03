@@ -1,9 +1,9 @@
-import org.example.DAO
+import org.example.dao.ConexaoDB
 import org.example.PessoaJuridica
 
 class MainTest {
     static void main(String[] args) {
-        def dados = new DAO()
+        def dados = new ConexaoDB()
 
         def empresa = new PessoaJuridica(
                 "Empresa yx",

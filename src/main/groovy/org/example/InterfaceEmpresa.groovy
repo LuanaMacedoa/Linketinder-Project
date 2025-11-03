@@ -1,43 +1,75 @@
 package org.example
 
-class InterfaceEmpresa {
-    DAO dados
+import org.example.dao.EmpresaDAO
+import org.example.dao.ConexaoDB
+import java.io.BufferedReader
+import java.sql.Connection
 
-    InterfaceEmpresa(DAO dados){
-        this.dados = dados
+class InterfaceEmpresa {
+    EmpresaDAO empresaDao
+
+    InterfaceEmpresa() {
+        this.empresaDao = new EmpresaDAO()
     }
 
-    def mostrarEmpresas(){
-        println "\nEMPRESAS"
-        for (i in dados.listarEmpresas()){
-            println i
+    void mostrarEmpresas() {
+        Connection conn = null
+        try {
+            conn = ConexaoDB.conectar()
+            if (conn == null) {
+                println "Erro: não foi possível conectar ao banco."
+                return
+            }
+
+            List<PessoaJuridica> lista = empresaDao.listar(conn)
+            println "\n===== LISTA DE EMPRESAS ====="
+            if (lista.isEmpty()) {
+                println "Nenhuma empresa cadastrada."
+            } else {
+                lista.each { println it }
+            }
+
+        } finally {
+            ConexaoDB.fechar(conn)
         }
     }
 
-    def adicionarEmpresa(BufferedReader reader){
-        println "Digite nome: "
-        def nome = reader.readLine()
-        println "Digite email: "
-        def email = reader.readLine()
-        println "Digite estado: "
-        def estado = reader.readLine()
-        println "Digite cep: "
-        def cep = reader.readLine()
-        println "Digite CNPJ: "
-        def cnpj = reader.readLine()
-        println "Digite País: "
-        def pais = reader.readLine()
-        println "Digite Descrição da empresa: "
-        def descE = reader.readLine()
-        println "Digite senha: "
-        def senha = reader.readLine()
-        println "Digite competências (separadas por vírgula): "
-        def competenciasStr = reader.readLine()
-        def competencias = competenciasStr.split(",")*.trim()
+    void adicionarEmpresa(BufferedReader reader) {
+        print "Nome: "
+        String nome = reader.readLine()
+        print "Email: "
+        String email = reader.readLine()
+        print "País: "
+        String pais = reader.readLine()
+        print "CEP: "
+        String cep = reader.readLine()
+        print "CNPJ: "
+        String cnpj = reader.readLine()
+        print "Descrição da empresa: "
+        String descricao = reader.readLine()
+        print "Competências (separadas por vírgula): "
+        List<String> competencias = reader.readLine().split(",")*.trim()
+        print "Senha: "
+        String senha = reader.readLine()
 
-        def empresa = new PessoaJuridica(nome,email,estado,cep,cnpj,pais,descE,competencias,senha)
-        dados.inserirEmpresa(empresa)
-        println "Empresa adicionada com sucesso!"
+        PessoaJuridica empresa = new PessoaJuridica(
+                nome, email, cep, cnpj, pais, descricao, competencias, senha
+        )
+
+        Connection conn = null
+        try {
+            conn = ConexaoDB.conectar()
+            if (conn == null) {
+                println "Erro: não foi possível conectar ao banco."
+                return
+            }
+            empresaDao.inserir(conn, empresa)
+            println "\nEmpresa '${empresa.nome}' cadastrada com sucesso!"
+        } finally {
+            ConexaoDB.fechar(conn)
+        }
     }
 }
+
+
 
