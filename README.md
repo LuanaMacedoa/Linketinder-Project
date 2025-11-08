@@ -36,5 +36,17 @@ MVP de sistema de contratação inspirado no **LinkedIn** e **Tinder**, permitin
 - utilizado: dbdiagram
 <img width="1658" height="750" alt="Captura de tela 2025-10-12 195055" src="https://github.com/user-attachments/assets/e48c1e62-800e-4d99-9615-24f5981cdd43" />
 
+## Princípios SOLID Aplicados
 
+1. **Responsabilidade Única (SRP)**: A lógica de persistência foi movida para classes DAO (como `EmpresaDAO`), deixando as classes de interface com responsabilidades únicas.
+2. **Aberto/Fechado (OCP)**: O código foi estruturado para ser extensível sem modificar as classes existentes, como a separação das operações de CRUD.
+3. **Substituição de Liskov (LSP)**: As subclasses `PessoaFisica` e `PessoaJuridica` podem substituir `Pessoa` sem problemas, mantendo o comportamento esperado.
+4. **Segregação de Interface (ISP)**: Métodos foram organizados para que cada classe ou interface tenha apenas o que precisa, evitando dependências desnecessárias.
+5. **Inversão de Dependência (DIP)**: As dependências, como `EmpresaDAO`, são injetadas nas classes de interface, reduzindo o acoplamento.
+
+## Principais Mudanças
+
+- **Refatoração das classes de interface** (ex: `InterfaceEmpresa`), delegando responsabilidades de persistência para o `EmpresaDAO`.
+- **Injeção de dependência** para reduzir o acoplamento direto entre as classes de lógica de negócios e persistência.
+- **Estrutura modular** e mais **testável**, seguindo os princípios SOLID.
 
