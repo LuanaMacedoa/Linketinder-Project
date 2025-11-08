@@ -1,8 +1,7 @@
 package org.example
 
 import org.example.dao.ConexaoDB
-import java.io.BufferedReader
-import java.io.InputStreamReader
+
 import java.sql.Connection
 
 class Main {
@@ -10,7 +9,7 @@ class Main {
     static void main(String[] args) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))
 
-        InterfaceUsuario interfaceCandidato = new InterfaceUsuario()
+        InterfaceCandidato interfaceCandidato = new InterfaceCandidato()
         InterfaceEmpresa interfaceEmpresa = new InterfaceEmpresa()
         InterfaceVaga interfaceVaga = new InterfaceVaga()
 
@@ -43,7 +42,7 @@ class Main {
         }
     }
 
-    static void menuCandidatos(BufferedReader reader, InterfaceUsuario ic) {
+    static void menuCandidatos(BufferedReader reader, InterfaceCandidato ic) {
         while (true) {
             println "\n--- CANDIDATOS ---"
             println "1 - Listar candidatos"
@@ -101,11 +100,14 @@ class Main {
                     default:
                         println "Opção inválida!"
                 }
+            } catch (Exception e) {
+                println "Erro ao processar a operação: ${e.message}"
             } finally {
                 ConexaoDB.fechar(conn)
             }
         }
     }
+
 
     static void menuVagas(BufferedReader reader, InterfaceVaga iv) {
         while (true) {

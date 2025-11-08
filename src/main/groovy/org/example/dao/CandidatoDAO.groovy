@@ -94,7 +94,39 @@ class CandidatoDAO {
         } catch (SQLException e) {
             println "Erro ao deletar candidato: ${e.message}"
         }
+
+
     }
+    PessoaFisica buscarPorId(Connection conn, int id) {
+        PessoaFisica candidato = null
+        try {
+            String sql = "SELECT * FROM Candidato WHERE id_candidato = ?"
+            PreparedStatement stmt = conn.prepareStatement(sql)
+            stmt.setInt(1, id)
+            ResultSet rs = stmt.executeQuery()
+
+            if (rs.next()) {
+                candidato = new PessoaFisica(
+                        rs.getString("nome"),
+                        rs.getString("sobrenome"),
+                        rs.getString("email"),
+                        rs.getString("pais"),
+                        rs.getString("cep"),
+                        rs.getString("cpf"),
+                        rs.getString("desc_pessoal"),
+                        [], // Lista de competências será preenchida conforme necessário
+                        rs.getDate("data_nasc")?.toLocalDate(),
+                        rs.getString("senha")
+                )
+                candidato.id = rs.getInt("id_candidato")
+            }
+
+        } catch (SQLException e) {
+            println "Erro ao buscar candidato por ID: ${e.message}"
+        }
+        return candidato
+    }
+
 }
 
 

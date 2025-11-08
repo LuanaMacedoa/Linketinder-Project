@@ -1,17 +1,20 @@
 package org.example
-
 import org.example.dao.ConexaoDB
+import org.example.dao.VagaDAO
+import java.io.BufferedReader
+import java.sql.Connection
 
 class InterfaceVaga {
-    ConexaoDB dados
 
-    InterfaceVaga(ConexaoDB dados) {
-        this.dados = dados
+    VagaDAO vagaDao
+
+    InterfaceVaga() {
+        this.vagaDao = new VagaDAO()
     }
 
-    def mostrarVagas() {
+    def mostrarVagas(Connection conn) {
         println "\n===== LISTA DE VAGAS ====="
-        def lista = dados.listarVagas()
+        def lista = vagaDao.listar(conn)
         if (lista.isEmpty()) {
             println "Nenhuma vaga cadastrada."
         } else {
@@ -19,7 +22,7 @@ class InterfaceVaga {
         }
     }
 
-    def adicionarVaga(BufferedReader reader) {
+    def adicionarVaga(BufferedReader reader, Connection conn) {
         println "\n=== CADASTRO DE VAGA ==="
         print "Nome da vaga: "
         def nomeVaga = reader.readLine()
@@ -32,18 +35,18 @@ class InterfaceVaga {
         def competencias = competenciasStr.split(",")*.trim()
 
         def vaga = new Vaga(nomeVaga, descricao, competencias, idEmpresa)
-        dados.inserirVaga(vaga)
+        vagaDao.inserir(conn, vaga)
         println "\nVaga '${vaga.nomeVaga}' cadastrada com sucesso!"
     }
 
-    def removerVaga(BufferedReader reader) {
+    def removerVaga(BufferedReader reader, Connection conn) {
         print "Digite o ID da vaga que deseja remover: "
         def id = reader.readLine().toInteger()
-        dados.deletarVaga(id)
+        vagaDao.deletar(conn, id)
         println "Vaga removida com sucesso!"
     }
 
-    def atualizarVaga(BufferedReader reader) {
+    def atualizarVaga(BufferedReader reader, Connection conn) {
         print "Digite o ID da vaga que deseja atualizar: "
         def id = reader.readLine().toInteger()
         print "Novo nome da vaga: "
@@ -54,9 +57,11 @@ class InterfaceVaga {
         def competenciasStr = reader.readLine()
         def competencias = competenciasStr.split(",")*.trim()
 
-        def vaga = new Vaga(nomeVaga, descricao, competencias, 0) // empresaId não será atualizado aqui
+
+        def vaga = new Vaga(nomeVaga, descricao, competencias, 0)
         vaga.id = id
-        dados.atualizarVaga(vaga)
+        vagaDao.atualizar(conn, vaga)
         println "Vaga ID '${id}' atualizada com sucesso!"
     }
 }
+

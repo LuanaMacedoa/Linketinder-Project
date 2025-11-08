@@ -1,7 +1,6 @@
 package org.example.dao
 
 import org.example.PessoaJuridica
-
 import java.sql.*
 
 class EmpresaDAO {
@@ -9,7 +8,7 @@ class EmpresaDAO {
     void inserir(Connection conn, PessoaJuridica empresa) {
         try {
             def sql = """INSERT INTO Empresa(cnpj, nome_emp, email_corporativo, cep, desc_empresa, pais, senha)
-VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id_empresa"""
+                        VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id_empresa"""
             def stmt = conn.prepareStatement(sql)
             stmt.setString(1, empresa.cnpj)
             stmt.setString(2, empresa.nome)
@@ -17,7 +16,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id_empresa"""
             stmt.setString(4, empresa.cep)
             stmt.setString(5, empresa.descricaoEmpresa)
             stmt.setString(6, empresa.pais)
-            stmt.setString(7, empresa.senha ?: "1234")
+            stmt.setString(7, empresa.senha ?: "1234") // Senha padrão
 
             def rs = stmt.executeQuery()
             rs.next()
@@ -54,7 +53,9 @@ VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id_empresa"""
 
     void atualizar(Connection conn, PessoaJuridica e) {
         try {
-            def sql = "UPDATE Empresa SET nome_emp=?, email_corporativo=?, cep=?, desc_empresa=?, pais=? WHERE id_empresa=?"
+            def sql = """UPDATE Empresa
+                         SET nome_emp=?, email_corporativo=?, cep=?, desc_empresa=?, pais=?
+                         WHERE id_empresa=?"""
             def stmt = conn.prepareStatement(sql)
             stmt.setString(1, e.nome)
             stmt.setString(2, e.email)
@@ -79,6 +80,25 @@ VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id_empresa"""
             println "Erro ao deletar empresa: ${e.message}"
         }
     }
-}
 
+
+    void mostrarEmpresas(Connection conn) {
+        try {
+            if (conn == null) {
+                println "Erro: não foi possível conectar ao banco."
+                return
+            }
+
+            List<PessoaJuridica> lista = listar(conn)
+            println "\n===== LISTA DE EMPRESAS ====="
+            if (lista.isEmpty()) {
+                println "Nenhuma empresa cadastrada."
+            } else {
+                lista.each { println it }
+            }
+        } catch (Exception e) {
+            println "Erro ao listar empresas: ${e.message}"
+        }
+    }
+}
 
