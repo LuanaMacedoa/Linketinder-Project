@@ -33,7 +33,7 @@ class InterfaceEmpresa {
     }
 
 
-    // Método para adicionar uma nova empresa
+
     void adicionarEmpresa(BufferedReader reader, Connection conn) {
         try {
             print "Nome: "
@@ -69,7 +69,7 @@ class InterfaceEmpresa {
         }
     }
 
-    // Método para atualizar dados de uma empresa
+
     void atualizarEmpresa(BufferedReader reader, Connection conn) {
         try {
             print "Digite o ID da empresa que deseja atualizar: "
@@ -102,7 +102,7 @@ class InterfaceEmpresa {
         }
     }
 
-    // Método para remover uma empresa
+
     void removerEmpresa(BufferedReader reader, Connection conn) {
         try {
             print "Digite o ID da empresa que deseja remover: "

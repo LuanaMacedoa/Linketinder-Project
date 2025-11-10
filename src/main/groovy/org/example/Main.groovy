@@ -1,5 +1,6 @@
 package org.example
 
+import org.example.connection.ConnectionFactorySingleton
 import org.example.dao.ConexaoDB
 
 import java.sql.Connection
@@ -53,7 +54,7 @@ class Main {
             print "Escolha: "
             String opcao = reader.readLine()
 
-            Connection conn = ConexaoDB.conectar()
+            Connection conn = ConnectionFactorySingleton.getInstance().getConnection();
             try {
                 switch (opcao) {
                     case "1": ic.mostrarCandidatos(); break
@@ -64,7 +65,7 @@ class Main {
                     default: println "Opção inválida!"
                 }
             } finally {
-                ConexaoDB.fechar(conn)
+                conn.close();
             }
         }
     }
@@ -80,7 +81,7 @@ class Main {
             print "Escolha: "
             String opcao = reader.readLine()
 
-            Connection conn = ConexaoDB.conectar()
+            Connection conn = ConnectionFactorySingleton.getInstance().getConnection();
             try {
                 switch (opcao) {
                     case "1":
@@ -103,7 +104,7 @@ class Main {
             } catch (Exception e) {
                 println "Erro ao processar a operação: ${e.message}"
             } finally {
-                ConexaoDB.fechar(conn)
+                conn.close();
             }
         }
     }
@@ -120,7 +121,7 @@ class Main {
             print "Escolha: "
             String opcao = reader.readLine()
 
-            Connection conn = ConexaoDB.conectar()
+            Connection conn = ConnectionFactorySingleton.getInstance().getConnection();
             try {
                 switch (opcao) {
                     case "1":
@@ -141,7 +142,7 @@ class Main {
                         println "Opção inválida!"
                 }
             } finally {
-                ConexaoDB.fechar(conn)
+                conn.close();
             }
         }
     }

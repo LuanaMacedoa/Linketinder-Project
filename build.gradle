@@ -20,10 +20,11 @@ run{
 
 dependencies {
     implementation 'org.apache.groovy:groovy:5.0.0'
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'org.postgresql:postgresql:42.7.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+
+
 }
 
 test {
