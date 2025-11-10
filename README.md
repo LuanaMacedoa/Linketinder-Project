@@ -68,3 +68,10 @@ MVP de sistema de contratação inspirado no **LinkedIn** e **Tinder**, permitin
 - **Refatoração das classes de interface** (ex: `InterfaceEmpresa`), delegando responsabilidades de persistência para o `EmpresaDAO`.
 - **Injeção de dependência** para reduzir o acoplamento direto entre as classes de lógica de negócios e persistência.
 - **Estrutura modular** e mais **testável**, seguindo os princípios SOLID.
+
+  
+## Mudanças com Design Patterns
+
+- Implementado **Singleton** para gerenciar a conexão com o banco de dados (`ConnectionFactorySingleton`), garantindo apenas uma instância de conexão.
+- Refatorado código para aplicar **DAO (Data Access Object)**, separando a lógica de acesso a dados das classes de negócio.
+- Essas mudanças melhoram a manutenção, facilitam testes e permitem trocar facilmente o tipo de banco de dados no futuro.
