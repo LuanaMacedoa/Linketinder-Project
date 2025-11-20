@@ -1,7 +1,9 @@
 package org.example
 
+import org.example.views.InterfaceCandidato
+import org.example.views.InterfaceEmpresa
+import org.example.views.InterfaceVaga
 import org.example.connection.ConnectionFactorySingleton
-import org.example.dao.ConexaoDB
 
 import java.sql.Connection
 
@@ -54,7 +56,7 @@ class Main {
             print "Escolha: "
             String opcao = reader.readLine()
 
-            Connection conn = ConnectionFactorySingleton.getInstance().getConnection();
+            Connection conn = ConnectionFactorySingleton.getInstance().getConnection()
             try {
                 switch (opcao) {
                     case "1": ic.mostrarCandidatos(); break
@@ -65,7 +67,7 @@ class Main {
                     default: println "Opção inválida!"
                 }
             } finally {
-                conn.close();
+                conn.close()
             }
         }
     }
@@ -81,20 +83,19 @@ class Main {
             print "Escolha: "
             String opcao = reader.readLine()
 
-            Connection conn = ConnectionFactorySingleton.getInstance().getConnection();
             try {
                 switch (opcao) {
                     case "1":
-                        ie.mostrarEmpresas(conn)
+                        ie.mostrarEmpresas()
                         break
                     case "2":
-                        ie.adicionarEmpresa(reader, conn)
+                        ie.adicionarEmpresa(reader)
                         break
                     case "3":
-                        ie.atualizarEmpresa(reader, conn)
+                        ie.atualizarEmpresa(reader)
                         break
                     case "4":
-                        ie.removerEmpresa(reader, conn)
+                        ie.removerEmpresa(reader)
                         break
                     case "0":
                         return
@@ -103,12 +104,9 @@ class Main {
                 }
             } catch (Exception e) {
                 println "Erro ao processar a operação: ${e.message}"
-            } finally {
-                conn.close();
             }
         }
     }
-
 
     static void menuVagas(BufferedReader reader, InterfaceVaga iv) {
         while (true) {
@@ -121,28 +119,27 @@ class Main {
             print "Escolha: "
             String opcao = reader.readLine()
 
-            Connection conn = ConnectionFactorySingleton.getInstance().getConnection();
             try {
                 switch (opcao) {
                     case "1":
-                        iv.mostrarVagas(conn)
+                        iv.mostrarVagas()  // Corrigido para o método correto
                         break
                     case "2":
-                        iv.adicionarVaga(reader, conn)
+                        iv.cadastrarVaga(reader)
                         break
                     case "3":
-                        iv.atualizarVaga(reader, conn)
+                        iv.atualizarVaga(reader)
                         break
                     case "4":
-                        iv.removerVaga(reader, conn)
+                        iv.deletarVaga(reader)
                         break
                     case "0":
                         return
                     default:
                         println "Opção inválida!"
                 }
-            } finally {
-                conn.close();
+            } catch (Exception e) {
+                println "Erro ao processar a operação: ${e.message}"
             }
         }
     }

@@ -1,6 +1,6 @@
-package org.example.dao
+package org.example.model.dao
 
-import org.example.Vaga
+import org.example.model.Vaga
 import java.sql.*
 
 class VagaDAO {
@@ -14,7 +14,7 @@ class VagaDAO {
             stmt.setInt(1, vaga.idEmpresa)
             stmt.setString(2, vaga.nomeVaga)
             stmt.setString(3, vaga.descricaoVaga)
-            stmt.setString(4, vaga.localizacao ?: "Remoto") // Usando "Remoto" como padrão
+            stmt.setString(4, vaga.localizacao ?: "Remoto")
             def rs = stmt.executeQuery()
             rs.next()
             vaga.id = rs.getInt("id_vaga")
@@ -32,7 +32,7 @@ class VagaDAO {
                 Vaga v = new Vaga(
                         rs.getString("nome_vaga"),
                         rs.getString("desc_vaga"),
-                        [],  // Você pode ajustar isso para buscar competências associadas, caso necessário
+                        [],
                         rs.getInt("id_empresa")
                 )
                 v.id = rs.getInt("id_vaga")

@@ -1,4 +1,4 @@
-import org.example.Pessoa
+import org.example.model.Pessoa
 import org.example.connection.ConnectionFactorySingleton
 
 import org.example.PessoaJuridica

@@ -9,7 +9,7 @@ CREATE TABLE Empresa (
 	senha VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Candidato (
+CREATE TABLE org.example.model.Candidato (
 	id_candidato SERIAL PRIMARY KEY,
 	nome VARCHAR(50) NOT NULL,
 	sobrenome VARCHAR(50) NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE Vaga(
 );
 
 CREATE TABLE Candidato_competencia(
-	id_candidato INT NOT NULL REFERENCES Candidato(id_candidato) ON DELETE CASCADE,
+	id_candidato INT NOT NULL REFERENCES org.example.model.Candidato(id_candidato) ON DELETE CASCADE,
 	id_competencia INT NOT NULL REFERENCES Competencia(id_competencia) ON DELETE CASCADE,
 	PRIMARY KEY (id_candidato,id_competencia)
 );
@@ -54,7 +54,7 @@ INSERT INTO Empresa (cnpj, nome_emp, email_corporativo, desc_empresa, pais, senh
 ('55.666.777/0001-88', 'SoftDesign', 'contato@softdesign.com', 'Design e soluções web', 'Brasil', 'senha321'),
 ('99.888.777/0001-66', 'DataFlow', 'contato@dataflow.com', 'Consultoria em dados e BI', 'Brasil', 'senha654');
 
-INSERT INTO Candidato (cpf, nome, sobrenome, email, pais, cep, data_nasc, desc_pessoal, senha) VALUES
+INSERT INTO org.example.model.Candidato (cpf, nome, sobrenome, email, pais, cep, data_nasc, desc_pessoal, senha) VALUES
 ('123.456.789-00', 'Sandubinha', 'Silva', 'sandubinha@gmail.com', 'Brasil', '58000-000', '1990-01-01', 'Apaixonado por programação', 'senha123'),
 ('234.567.890-11', 'Maria', 'Oliveira', 'mariao@gmail.com', 'Brasil', '58000-001', '1992-02-02', 'Desenvolvedora Front-end', 'senha234'),
 ('345.678.901-22', 'João', 'Pereira', 'joaop@gmail.com', 'Brasil', '58000-002', '1988-03-03', 'Especialista em banco de dados', 'senha345'),

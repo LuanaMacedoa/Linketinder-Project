@@ -1,12 +1,11 @@
-package org.example.dao
+package org.example.model
 
-import org.example.PessoaFisica
-
+import org.example.model.dao.CompetenciaDAO
 import java.sql.*
 
 class CandidatoDAO {
 
-    void inserir(Connection conn, PessoaFisica candidato) {
+    void inserir(Connection conn, Candidato candidato) {
         try {
             def sql = """INSERT INTO Candidato(nome, sobrenome, cpf, email, pais, cep, data_nasc, desc_pessoal, senha)
                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id_candidato"""
@@ -43,12 +42,12 @@ class CandidatoDAO {
         }
     }
 
-    List<PessoaFisica> listar(Connection conn) {
-        List<PessoaFisica> lista = []
+    List<Candidato> listar(Connection conn) {
+        List<Candidato> lista = []
         try {
             def rs = conn.createStatement().executeQuery("SELECT * FROM Candidato")
             while (rs.next()) {
-                PessoaFisica c = new PessoaFisica(
+                Candidato c = new Candidato(
                         rs.getString("nome"),
                         rs.getString("sobrenome"),
                         rs.getString("email"),
@@ -69,7 +68,7 @@ class CandidatoDAO {
         return lista
     }
 
-    void atualizar(Connection conn, PessoaFisica c) {
+    void atualizar(Connection conn, Candidato c) {
         try {
             def sql = "UPDATE Candidato SET nome=?, email=?, cep=?, desc_pessoal=? WHERE id_candidato=?"
             def stmt = conn.prepareStatement(sql)
@@ -94,11 +93,10 @@ class CandidatoDAO {
         } catch (SQLException e) {
             println "Erro ao deletar candidato: ${e.message}"
         }
-
-
     }
-    PessoaFisica buscarPorId(Connection conn, int id) {
-        PessoaFisica candidato = null
+
+    Candidato buscarPorId(Connection conn, int id) {
+        Candidato candidato = null
         try {
             String sql = "SELECT * FROM Candidato WHERE id_candidato = ?"
             PreparedStatement stmt = conn.prepareStatement(sql)
@@ -106,7 +104,7 @@ class CandidatoDAO {
             ResultSet rs = stmt.executeQuery()
 
             if (rs.next()) {
-                candidato = new PessoaFisica(
+                candidato = new Candidato(
                         rs.getString("nome"),
                         rs.getString("sobrenome"),
                         rs.getString("email"),
@@ -114,7 +112,7 @@ class CandidatoDAO {
                         rs.getString("cep"),
                         rs.getString("cpf"),
                         rs.getString("desc_pessoal"),
-                        [], // Lista de competências será preenchida conforme necessário
+                        [],
                         rs.getDate("data_nasc")?.toLocalDate(),
                         rs.getString("senha")
                 )
@@ -126,7 +124,4 @@ class CandidatoDAO {
         }
         return candidato
     }
-
 }
-
-

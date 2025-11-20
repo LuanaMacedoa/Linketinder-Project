@@ -1,13 +1,14 @@
-package org.example.dao
+package org.example.model.dao
 
-import org.example.PessoaJuridica
+import org.example.model.Empresa
+
 import java.sql.*
 
 class EmpresaDAO {
 
-    void inserir(Connection conn, PessoaJuridica empresa) {
+    void inserir(Connection conn, Empresa empresa) {
         try {
-            def sql = """INSERT INTO Empresa(cnpj, nome_emp, email_corporativo, cep, desc_empresa, pais, senha)
+            def sql = """INSERT INTO empresa(cnpj, nome_emp, email_corporativo, cep, desc_empresa, pais, senha)
                         VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id_empresa"""
             def stmt = conn.prepareStatement(sql)
             stmt.setString(1, empresa.cnpj)
@@ -16,7 +17,7 @@ class EmpresaDAO {
             stmt.setString(4, empresa.cep)
             stmt.setString(5, empresa.descricaoEmpresa)
             stmt.setString(6, empresa.pais)
-            stmt.setString(7, empresa.senha ?: "1234") // Senha padrão
+            stmt.setString(7, empresa.senha ?: "1234")
 
             def rs = stmt.executeQuery()
             rs.next()
@@ -27,12 +28,12 @@ class EmpresaDAO {
         }
     }
 
-    List<PessoaJuridica> listar(Connection conn) {
-        List<PessoaJuridica> lista = []
+    List<Empresa> listar(Connection conn) {
+        List<Empresa> lista = []
         try {
-            def rs = conn.createStatement().executeQuery("SELECT * FROM Empresa")
+            def rs = conn.createStatement().executeQuery("SELECT * FROM empresa")
             while (rs.next()) {
-                PessoaJuridica e = new PessoaJuridica(
+                Empresa e = new Empresa(
                         rs.getString("nome_emp"),
                         rs.getString("email_corporativo"),
                         rs.getString("cep"),
@@ -51,9 +52,9 @@ class EmpresaDAO {
         return lista
     }
 
-    void atualizar(Connection conn, PessoaJuridica e) {
+    void atualizar(Connection conn, Empresa e) {
         try {
-            def sql = """UPDATE Empresa
+            def sql = """UPDATE empresa
                          SET nome_emp=?, email_corporativo=?, cep=?, desc_empresa=?, pais=?
                          WHERE id_empresa=?"""
             def stmt = conn.prepareStatement(sql)
@@ -72,7 +73,7 @@ class EmpresaDAO {
 
     void deletar(Connection conn, int id) {
         try {
-            def stmt = conn.prepareStatement("DELETE FROM Empresa WHERE id_empresa=?")
+            def stmt = conn.prepareStatement("DELETE FROM empresa WHERE id_empresa=?")
             stmt.setInt(1, id)
             stmt.executeUpdate()
             stmt.close()
@@ -89,7 +90,7 @@ class EmpresaDAO {
                 return
             }
 
-            List<PessoaJuridica> lista = listar(conn)
+            List<Empresa> lista = listar(conn)
             println "\n===== LISTA DE EMPRESAS ====="
             if (lista.isEmpty()) {
                 println "Nenhuma empresa cadastrada."
